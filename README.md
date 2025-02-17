@@ -18,10 +18,17 @@ As listas estão divididas em categorias:
 ## Como Usar
 Copie o link bruto dos arquivos e adicione nas configurações do seu Pi-hole em "Group Management > Adlists".
 
-Exemplo:
-
+Links para copiar:
+### Adultos
 ```
 https://raw.githubusercontent.com/e-brendon/pi-hole/main/lists/adulto.txt
 ```
-
-### Substitua `adulto.txt` por `malware.txt` ou `bets.txt` conforme a lista desejada.
+### bets
+```
+https://raw.githubusercontent.com/e-brendon/pi-hole/main/lists/bets.txt
+```
+### 
+```
+https://raw.githubusercontent.com/e-brendon/pi-hole/main/lists/malware.txt
+```
+### Só adicionar a lista conforme desejado
