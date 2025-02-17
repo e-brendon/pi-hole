@@ -1,1 +1,51 @@
+name: Atualizar Listas Pi-hole
 
+on:
+  schedule:
+    - cron: '0 0 * * 1' # Toda segunda-feira à meia-noite (UTC)
+  workflow_dispatch:
+
+jobs:
+  atualizar_listas:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Baixar listas atualizadas (Gambling e Betfair)
+        run: |
+          curl -o lists/bets.txt https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts
+          curl -o lists/betfair.txt https://raw.githubusercontent.com/jmdugan/blocklists/master/corporations/betfair/all
+
+      - name: Limpar arquivos baixados (remover comentários e linhas desnecessárias)
+        run: |
+          sed -i '/^#/d; /^$/d; s/^0.0.0.0 //; s/^127.0.0.1 //' lists/bets.txt
+          sed -i '/^#/d; /^$/d' lists/betfair.txt
+
+      - name: Concatenar listas de apostas
+        run: |
+          cat lists/bets.txt lists/betfair.txt | sort -u > lists/bets_final.txt
+          mv lists/bets_final.txt lists/bets.txt
+          rm lists/betfair.txt
+
+      - name: Permitir execução dos scripts
+        run: chmod +x scripts/validar_dominios.sh
+
+      - name: Validar as listas
+        run: ./scripts/validar_dominios.sh
+
+      - name: Configurar Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Commit e Push se houver mudanças
+        run: |
+          if [[ `git status --porcelain` ]]; then
+            git add lists/*
+            git commit -m "Atualização automática das listas de apostas e validação"
+            git push
+          else
+            echo "Nenhuma alteração."
+          fi
