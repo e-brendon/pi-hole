@@ -27,7 +27,7 @@ https://raw.githubusercontent.com/e-brendon/pi-hole/main/lists/adulto.txt
 ```
 https://raw.githubusercontent.com/e-brendon/pi-hole/main/lists/bets.txt
 ```
-### 
+### malware
 ```
 https://raw.githubusercontent.com/e-brendon/pi-hole/main/lists/malware.txt
 ```
